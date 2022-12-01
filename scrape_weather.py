@@ -29,18 +29,30 @@ class WeatherScraper(HTMLParser):
             logger.error("Error")
         
     def handle_starttag(self, tag, attrs):
-        """
-        
-        """
-        if tag.__eq__('tbody'):
-            self.tbody = True
-        if tag.__eq__('tr'):
-            self.tr = True
-        if tag.__eq__('td'):
-            if(self.count_td <= 3):
-                self.td = True
-            else:
-                self.td = False
+
+        try: 
+            if tag == "tr":
+                self.inTr = True
+            if tag == "td":
+                self.inTd = True
+                
+            if tag == "th" and attrs[0][1] == "row":
+                self.inDate = True
+                # self.inTr = True
+            
+            if tag == "abbr" and self.inDate == True:
+                self.date = attrs[0][1]
+
+            if tag == "li" and len(attrs) > 1 and attrs[1][1] == "previous":
+                self.has_link = True
+
+            if tag == "a" and attrs[0][1] == "prev" and self.has_link == True:
+                self.link = attrs[1][1]
+
+            if tag == "li" and len(attrs) > 1 and attrs[1][1] == "previous disabled":
+                self.has_link = False
+        except Exception as error:
+            logger.error("Error")
             
     def handle_endtag(self, tag):
         """
