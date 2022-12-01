@@ -29,7 +29,9 @@ class WeatherScraper(HTMLParser):
             logger.error("Error")
         
     def handle_starttag(self, tag, attrs):
-
+        """
+        This method handles the start tag of the scraper.
+        """
         try: 
             if tag == "tr":
                 self.inTr = True
@@ -54,16 +56,39 @@ class WeatherScraper(HTMLParser):
         except Exception as error:
             logger.error("Error")
             
-    def handle_endtag(self, tag):
+    def handle_endtag(self,tag):
         """
-        
+        This method handles the end tag of the scraper.
         """
-        if tag.__eq__('tbody'):
-            self.tbody = False
-        if tag.__eq__('tr'):
-            self.tr = False
-        if tag.__eq__('td'):
-            self.td = False
+        try: 
+            if tag == "tr":
+                self.inTr = False
+
+                if self.date != "Average" and self.date != "Extreme":
+                    if (len(self.date)) != 0:
+                        date2 = self.date
+                        # 2018-05-1
+                        dateformat = datetime.strptime(date2, "%B %d, %Y").strftime("%Y-%m-%d")
+                        self.date = dateformat
+
+                        self.weather[self.date] = {
+                            "Max": float(self.row[0]), 
+                            "Min": float(self.row[1]), 
+                            "Mean": float(self.row[2])
+                            }
+                        print("Working on " + self.date +"...")
+                        # print("working on row " + self.row[0] +"...")
+                    print(self.date)
+            
+                self.row = []
+
+            elif tag == "td":
+                self.inTd = False
+            elif tag == "abbr":
+                self.inDate = False
+
+        except Exception as error:
+            logger.error("Error")
             
 
     def handle_data(self, data):
