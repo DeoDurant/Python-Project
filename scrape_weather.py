@@ -3,8 +3,9 @@ Weather Scraper
 Group Members: Calvin Anglo, Choie Llamas
 Project Milestone: 1
 Created: 2022-11-24
-Updated: 2022-11-24
+Updated: 2022-11-30
 """
+
 from html.parser import HTMLParser
 import urllib.request
 from datetime import datetime
@@ -91,33 +92,62 @@ class WeatherScraper(HTMLParser):
             logger.error("Error")
             
 
-    def handle_data(self, data):
-        if self.tbody and self.tr and self.td:
-            self.count_td += 1
-            if self.count_td == 1:
-                self.daily_temps.update({"max": data})
-            elif self.count_td == 2:
-                self.daily_temps.update({"min": data})
-            elif self.count_td == 3:
-                self.daily_temps.update({"mean": data})
-                self.count_td = 0
-                
-            # if self.count_td == 1:
-            #     self.daily_temps.update({"max": data})
-            # elif self.count_td == 2:
-            #     self.daily_temps.update({"min": data})
-            # elif self.count_td == 3:
-            #     self.daily_temps.update({"mean": data})
-            
-        print(self.daily_temps)
-            
-        # 
-        #     self.daily_temps.update({"max": data})
-        #     self.daily_temps.update({"min": data})
-        #     self.daily_temps.update({"mean": data})
+    def handle_data(self,data):
+        """
+        This method handles the data in a tag.
+        """
+        try: 
+            if self.inTr == True and self.inTd == True:
+                self.row.append(data)
+
+                if len(self.row) == 3:
+                    self.inTr = False
+        except Exception as error:
+            logger.error("Error")
+
+    def start_scraper(self):
+        """
+        This method scrapes data from climate.weather.gc.ca.
+        """
+        try:
+            currentyear = datetime.now().year
+            currentmonth = datetime.now().month
+
+            #Full Link
+            current_link = ("http://climate.weather.gc.ca/climate_data/daily_data_e.html?"
+                    "StationID=27174&timeframe=2&StartYear=1840&EndYear=2018&Day="
+                    "1&Year=" + str(currentyear) + "&Month=" + str(currentmonth))
+
+            #Link for testing
+            # current_link = ("http://climate.weather.gc.ca/climate_data/daily_data_e.html?"
+            #         "StationID=27174&timeframe=2&StartYear=1840&EndYear=2018&Day="
+            #         "1&Year=1997&Month=3")
+
+            while self.has_link:
+
+                with urllib.request.urlopen(current_link) as response:
+                    html = str(response.read())
+
+                self.feed(html)
+                current_link = "http://climate.weather.gc.ca" + self.link
+
+            # print(self.weather)
+        except Exception as error:
+            logger.error("Error")
+
+    def get_weather(self):
+        """
+        This method prints and returns the Min, Max, and Mean of the days that were scraped.
+        """
+        print(self.weather)
+        return self.weather
             
 
 logging.basicConfig(filename='errors.log', level=logging.ERROR,
                     format='%(asctime)s %(levelname)s %(name)s %(message)s')
 logger = logging.getLogger(__name__)
+
+# myparser = WeatherScraper()
+# myparser.start_scraper()
+# myparser.get_weather()
 
