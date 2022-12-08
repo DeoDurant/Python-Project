@@ -114,14 +114,14 @@ class WeatherScraper(HTMLParser):
             currentmonth = datetime.now().month
 
             #Full Link
-            current_link = ("http://climate.weather.gc.ca/climate_data/daily_data_e.html?"
-                    "StationID=27174&timeframe=2&StartYear=1840&EndYear=2018&Day="
-                    "1&Year=" + str(currentyear) + "&Month=" + str(currentmonth))
-
-            #Link for testing
             # current_link = ("http://climate.weather.gc.ca/climate_data/daily_data_e.html?"
             #         "StationID=27174&timeframe=2&StartYear=1840&EndYear=2018&Day="
-            #         "1&Year=1997&Month=3")
+            #         "1&Year=" + str(currentyear) + "&Month=" + str(currentmonth))
+
+            #Link for testing
+            current_link = ("http://climate.weather.gc.ca/climate_data/daily_data_e.html?"
+                    "StationID=27174&timeframe=2&StartYear=1840&EndYear=2018&Day="
+                    "1&Year=1997&Month=3")
 
             while self.has_link:
 
@@ -147,7 +147,7 @@ logging.basicConfig(filename='errors.log', level=logging.ERROR,
                     format='%(asctime)s %(levelname)s %(name)s %(message)s')
 logger = logging.getLogger(__name__)
 
-# myparser = WeatherScraper()
-# myparser.start_scraper()
-# myparser.get_weather()
+myparser = WeatherScraper()
+myparser.start_scraper()
+myparser.get_weather()
 
