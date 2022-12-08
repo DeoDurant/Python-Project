@@ -54,6 +54,32 @@ class DBOPerations():
 
         except Exception as error:
             logger.error("Error")
+            
+    def initialize_db(self):
+        try:
+
+            with DBCM("weather.sqlite") as cursor:
+                sql = """Create table if not exists weather_data
+                        (id integer primary key autoincrement not null,
+                        sample_date text not null,
+                        location text not null,
+                        min_temp real not null,
+                        max_temp real not null,
+                        avg_temp real not null);"""
+
+                cursor.execute(sql)
+        except Exception as error:
+            logger.error("Error")
+
+    def purge_data(self):
+
+        try:
+
+            with DBCM("weather.sqlite") as cursor:
+                sql = "drop table if exists samples"
+                cursor.execute(sql)
+        except Exception as error:
+            logger.error("Error")
 
     
 
