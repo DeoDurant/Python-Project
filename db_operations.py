@@ -5,7 +5,9 @@ import sqlite3
 class DBOPerations():
 
     def fetch_data(self, start, end):
-
+        """
+        This method will return data for the plotting class.
+        """
         try: 
             dates = []
 
@@ -24,7 +26,9 @@ class DBOPerations():
             logger.error("Error")
         
     def save_data(self, data, location):
-
+        """
+        This method will save new data to the DB.
+        """
         try:
 
             data_location = location
@@ -56,8 +60,10 @@ class DBOPerations():
             logger.error("Error")
             
     def initialize_db(self):
+        """
+        This method initializes the database if one does not exist.
+        """
         try:
-
             with DBCM("weather.sqlite") as cursor:
                 sql = """Create table if not exists weather_data
                         (id integer primary key autoincrement not null,
@@ -72,7 +78,9 @@ class DBOPerations():
             logger.error("Error")
 
     def purge_data(self):
-
+        """
+        This method purges data from the DB.
+        """
         try:
 
             with DBCM("weather.sqlite") as cursor:
@@ -87,3 +95,7 @@ class DBOPerations():
 logging.basicConfig(filename='errors.log', level=logging.ERROR,
                     format='%(asctime)s %(levelname)s %(name)s %(message)s')
 logger = logging.getLogger(__name__)
+
+dbop = DBOPerations()
+
+
