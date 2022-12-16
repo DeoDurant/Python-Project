@@ -3,6 +3,9 @@ import logging
 import sqlite3
 
 class DBOPerations():
+    """
+    This class fetches, saves, initializes, and purges a database.
+    """
 
     def fetch_data(self, start, end):
         """
