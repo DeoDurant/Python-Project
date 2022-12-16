@@ -13,7 +13,7 @@ import logging
 
 class WeatherScraper(HTMLParser):
     """
-    This class scrapes data from the weather website.
+    This class scrapes data from the weather website. Choie & Calvin
     """
     def __init__(self):
         try:
@@ -33,7 +33,7 @@ class WeatherScraper(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         """
-        This method handles the start tag of the scraper.
+        This method handles the start tag of the scraper. Choie & Calvin
         """
         try:
             if tag == "tr":
@@ -61,7 +61,7 @@ class WeatherScraper(HTMLParser):
 
     def handle_endtag(self,tag):
         """
-        This method handles the end tag of the scraper.
+        This method handles the end tag of the scraper. Choie & Calvin
         """
         try:
             if tag == "tr":
@@ -97,7 +97,7 @@ class WeatherScraper(HTMLParser):
 
     def handle_data(self,data):
         """
-        This method handles the data in a tag.
+        This method handles the data in a tag. Choie & Calvin
         """
         try:
             if self.inTr is True and self.inTd is True:
@@ -110,7 +110,7 @@ class WeatherScraper(HTMLParser):
 
     def start_scraper(self):
         """
-        This method scrapes data from climate.weather.gc.ca.
+        This method scrapes data from climate.weather.gc.ca. Choie & Calvin
         """
         try:
             currentyear = datetime.now().year
@@ -140,7 +140,7 @@ class WeatherScraper(HTMLParser):
 
     def get_weather(self):
         """
-        This method prints and returns the Min, Max, and Mean of the days that were scraped.
+        This method prints and returns the Min, Max, and Mean of the days that were scraped. Choie & Calvin
         """
         print(self.weather)
         return self.weather

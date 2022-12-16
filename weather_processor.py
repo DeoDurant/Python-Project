@@ -12,11 +12,11 @@ from scrape_weather import WeatherScraper
 
 class WeatherProcessor():
     """
-    This class prompts the user for input to scrape data from a website.
+    This class prompts the user for input to scrape data from a website. Choie & Calvin
     """
     def user_choice(self):
         """
-        This method prompts the user and calls other methods to scrape.
+        This method prompts the user and calls other methods to scrape. Choie & Calvin
         """
         try:
             letters = ['u','f']
@@ -40,7 +40,7 @@ class WeatherProcessor():
 
     def full_choice(self):
         """
-        This method will scrape all of the data from a website as far back as it can.
+        This method will scrape all of the data from a website as far back as it can. Choie & Calvin
         """
         try:
             weather_info = WeatherScraper()
@@ -56,7 +56,7 @@ class WeatherProcessor():
 
     def update_choice(self):
         """
-        This method updates and saves the database.
+        This method updates and saves the database. Choie & Calvin
         """
         try:
             weather_info = WeatherScraper()

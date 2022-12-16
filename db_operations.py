@@ -16,7 +16,7 @@ class DBOPerations():
     """
     def fetch_data(self, start, end):
         """
-        This method will return data for the plotting class.
+        This method will return data for the plotting class. Choie
         """
         try:
             dates = []
@@ -37,7 +37,7 @@ class DBOPerations():
 
     def save_data(self, data, location):
         """
-        This method will save new data to the DB.
+        This method will save new data to the DB. Calvin
         """
         try:
 
@@ -69,7 +69,7 @@ class DBOPerations():
 
     def initialize_db(self):
         """
-        This method initializes the database if one does not exist.
+        This method initializes the database if one does not exist. Calvin
         """
         try:
             with DBCM("weather.sqlite") as cursor:
@@ -87,7 +87,7 @@ class DBOPerations():
 
     def purge_data(self):
         """
-        This method purges data from the DB.
+        This method purges data from the DB. Choie 
         """
         try:
 
@@ -99,7 +99,7 @@ class DBOPerations():
             
     def latest(self):
         """
-        This method returns the latest data from the db.
+        This method returns the latest data from the db. Calvin
         """
         try:
             with DBCM("weather.sqlite") as cursor:
