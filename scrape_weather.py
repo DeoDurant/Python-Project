@@ -29,45 +29,46 @@ class WeatherScraper(HTMLParser):
             self.has_link = True
             self.link = ""
         except Exception as error:
-            logger.error("Error")
-        
+            logger.error(error)
+
     def handle_starttag(self, tag, attrs):
         """
         This method handles the start tag of the scraper.
         """
-        try: 
+        try:
             if tag == "tr":
                 self.inTr = True
             if tag == "td":
                 self.inTd = True
-                
+
             if tag == "th" and attrs[0][1] == "row":
                 self.inDate = True
                 # self.inTr = True
-            
-            if tag == "abbr" and self.inDate == True:
+
+            if tag == "abbr" and self.inDate is True:
                 self.date = attrs[0][1]
 
             if tag == "li" and len(attrs) > 1 and attrs[1][1] == "previous":
                 self.has_link = True
 
-            if tag == "a" and attrs[0][1] == "prev" and self.has_link == True:
+            if tag == "a" and attrs[0][1] == "prev" and self.has_link is True:
                 self.link = attrs[1][1]
 
             if tag == "li" and len(attrs) > 1 and attrs[1][1] == "previous disabled":
                 self.has_link = False
         except Exception as error:
-            logger.error("Error")
-            
+            logger.error(error)
+
     def handle_endtag(self,tag):
         """
         This method handles the end tag of the scraper.
         """
-        try: 
+        try:
             if tag == "tr":
                 self.inTr = False
 
-                if self.date != "Average" and self.date != "Extreme":
+                #if self.date != "Average" and self.date != "Extreme":
+                if self.date not in ('Average', 'Extreme'):
                     if (len(self.date)) != 0:
                         date2 = self.date
                         # 2018-05-1
@@ -75,14 +76,14 @@ class WeatherScraper(HTMLParser):
                         self.date = dateformat
 
                         self.weather[self.date] = {
-                            "Max": float(self.row[0]), 
-                            "Min": float(self.row[1]), 
+                            "Max": float(self.row[0]),
+                            "Min": float(self.row[1]),
                             "Mean": float(self.row[2])
                             }
                         print("Working on " + self.date +"...")
                         # print("working on row " + self.row[0] +"...")
                     print(self.date)
-            
+
                 self.row = []
 
             elif tag == "td":
@@ -91,21 +92,21 @@ class WeatherScraper(HTMLParser):
                 self.inDate = False
 
         except Exception as error:
-            logger.error("Error")
-            
+            logger.error(error)
+
 
     def handle_data(self,data):
         """
         This method handles the data in a tag.
         """
-        try: 
-            if self.inTr == True and self.inTd == True:
+        try:
+            if self.inTr is True and self.inTd is True:
                 self.row.append(data)
 
                 if len(self.row) == 3:
                     self.inTr = False
-        except Exception as error:  
-            logger.error("Error")
+        except Exception as error:
+            logger.error(error)
 
     def start_scraper(self):
         """
@@ -135,7 +136,7 @@ class WeatherScraper(HTMLParser):
 
             # print(self.weather)
         except Exception as error:
-            logger.error("Error")
+            logger.error(error)
 
     def get_weather(self):
         """
@@ -143,13 +144,12 @@ class WeatherScraper(HTMLParser):
         """
         print(self.weather)
         return self.weather
-            
+
 
 logging.basicConfig(filename='errors.log', level=logging.ERROR,
                     format='%(asctime)s %(levelname)s %(name)s %(message)s')
 logger = logging.getLogger(__name__)
 
-myparser = WeatherScraper()
-myparser.start_scraper()
-myparser.get_weather()
-
+# myparser = WeatherScraper()
+# myparser.start_scraper()
+# myparser.get_weather()

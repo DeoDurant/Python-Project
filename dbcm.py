@@ -1,15 +1,23 @@
+"""
+Weather Scraper
+Group Members: Calvin Anglo, Choie Llamas
+Project Milestone: 1
+Created: 2022-11-24
+Updated: 2022-11-30
+"""
 import sqlite3
 
 class DBCM():
     """This class is a context manager for the weather app."""
 
-    def __init__(self, connection):
+    def __init__(self, connect, cursor):
         """ Initialize the class with a connection parameter"""
-        self.connection = connection
+        self.connect = connect
+        self.cursor = cursor
 
     def __enter__(self):
         """This method is called when the context manager is entered using the "with" statement"""
-        self.connect = sqlite3.connect(self.connection)
+        self.connect = sqlite3.connect(self.connect)
         # Create a connection to the SQLite database using the connection string provided
         self.cursor = self.connect.cursor()
         # Create a cursor to execute SQL commands on the connection
@@ -24,4 +32,3 @@ class DBCM():
         # Close the cursor
         self.connect.close()
         # Close the connection
-

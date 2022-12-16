@@ -1,17 +1,24 @@
-from dbcm import DBCM
+"""
+Weather Scraper
+Group Members: Calvin Anglo, Choie Llamas
+Project Milestone: 1
+Created: 2022-11-24
+Updated: 2022-11-30
+"""
+
 import logging
-import sqlite3
+from dbcm import DBCM
+
 
 class DBOPerations():
     """
     This class fetches, saves, initializes, and purges a database.
     """
-
     def fetch_data(self, start, end):
         """
         This method will return data for the plotting class.
         """
-        try: 
+        try:
             dates = []
 
             start_date = start + "-01-01"
@@ -26,8 +33,8 @@ class DBOPerations():
 
             return database_data
         except Exception as error:
-            logger.error("Error")
-        
+            logger.error(error)
+
     def save_data(self, data, location):
         """
         This method will save new data to the DB.
@@ -39,17 +46,15 @@ class DBOPerations():
             print(weather_data)
             for date, temps in data.items():
 
-                    list_data = []
-                    list_data.append(date.strip())
-                    list_data.append(data_location)
+                list_data = []
+                list_data.append(date.strip())
+                list_data.append(data_location)
 
-                    for _, temp_value in temps.items():
+                for _, temp_value in temps.items():
 
-                            list_data.append(temp_value)
+                    list_data.append(temp_value)
 
-
-                    weather_data.append(list_data)
-
+                weather_data.append(list_data)
 
             with DBCM("weather.sqlite") as cursor:
                 sql = """insert into weather_data (sample_date,location,max_temp,min_temp,avg_temp)
@@ -60,8 +65,8 @@ class DBOPerations():
                 cursor.executemany(sql, weather_data)
 
         except Exception as error:
-            logger.error("Error")
-            
+            logger.error(error)
+
     def initialize_db(self):
         """
         This method initializes the database if one does not exist.
@@ -78,7 +83,7 @@ class DBOPerations():
 
                 cursor.execute(sql)
         except Exception as error:
-            logger.error("Error")
+            logger.error(error)
 
     def purge_data(self):
         """
@@ -90,15 +95,24 @@ class DBOPerations():
                 sql = "drop table if exists samples"
                 cursor.execute(sql)
         except Exception as error:
-            logger.error("Error")
+            logger.error(error)
+            
+    def latest(self):
+        """
+        This method returns the latest data from the db.
+        """
+        try:
+            with DBCM("weather.sqlite") as cursor:
+                sql = "select * from weather_data order by date(sample_date) desc limit 1"
+                latest = cursor.execute(sql)
 
-    
+                for data in latest:
 
+                    return data[1]
+
+        except Exception as error:
+            logger.error(error)
 
 logging.basicConfig(filename='errors.log', level=logging.ERROR,
                     format='%(asctime)s %(levelname)s %(name)s %(message)s')
 logger = logging.getLogger(__name__)
-
-dbop = DBOPerations()
-
-
