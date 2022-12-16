@@ -11,8 +11,10 @@ import urllib.request
 from datetime import datetime
 import logging
 
-
 class WeatherScraper(HTMLParser):
+    """
+    This class scrapes data from the weather website.
+    """
     def __init__(self):
         try:
             HTMLParser.__init__(self)
