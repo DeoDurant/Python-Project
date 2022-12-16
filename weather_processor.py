@@ -3,7 +3,7 @@ Weather Scraper
 Group Members: Calvin Anglo, Choie Llamas
 Project Milestone: 1
 Created: 2022-11-24
-Updated: 2022-11-30
+Updated: 2022-12-16
 """
 
 import logging
